@@ -4,6 +4,7 @@ import {
   deleteDoc,
   deleteField,
   doc,
+  getDoc,
   setDoc,
   updateDoc,
 } from "@firebase/firestore"
@@ -21,7 +22,7 @@ export const setDocWithSpecificID = async (
   await setDoc(doc(db, collectionName, id), payload)
 }
 
-// set doc with specific ID with 'merge' option to
+// create doc with specific ID with 'merge' option to
 // prevent overwrite of whole doc
 export const mergeDocWithSpecificID = async (
   collectionName: string,
@@ -31,6 +32,18 @@ export const mergeDocWithSpecificID = async (
   console.log("mergeDocWithSpecificID")
 
   await setDoc(doc(db, collectionName, id), payload, { merge: true })
+}
+// update doc with specific ID with 'merge' option to
+// prevent overwrite of whole doc
+export const updateDocItem = async (
+  collectionName: string,
+  payload: object,
+  id: string
+) => {
+  console.log("updateDocItem")
+  
+  const docRef = doc(db, collectionName, id)
+  await setDoc(docRef, payload, { merge: true })
 }
 
 // add doc with firebase auto ID
@@ -47,6 +60,19 @@ export const createDocWithAutoID = async (
   return newDocRef
 }
 
+export const getSingleDoc = async (collectionName: string, id: string) => {
+  const docRef = doc(db, collectionName, id)
+  const docSnap = await getDoc(docRef)
+
+  if (docSnap.exists()) {
+    // console.log("Document data:", docSnap.data())
+    return docSnap
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!")
+  }
+}
+
 // delete doc
 export const deleteItem = async (collectionName: string, id: string) => {
   console.log("Deleting doc")
@@ -54,7 +80,7 @@ export const deleteItem = async (collectionName: string, id: string) => {
   await deleteDoc(doc(db, collectionName, id))
 }
 
-// delete specific doc field
+// delete doc field
 export const deleteDocField = async (
   collectionName: string,
   id: string,

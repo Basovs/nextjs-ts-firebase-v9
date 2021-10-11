@@ -4,16 +4,22 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  serverTimestamp,
 } from "@firebase/firestore"
 import db from "../firebase/client"
-import { createDocWithAutoID, deleteItem } from "./firebase"
+import {
+  createDocWithAutoID,
+  deleteItem,
+  getSingleDoc,
+  updateDocItem,
+} from "./firebase"
 
 // create note
 export const createNote = async () => {
   const title = prompt("Title")
   const text = prompt("text")
 
-  const payload = { title, text }
+  const payload = { title, text, createdAt: serverTimestamp() }
 
   const newDocRef = await createDocWithAutoID("notes", payload)
   // console.log("newDocRef", newDocRef)
@@ -46,19 +52,21 @@ export const subscribeCollection = async (
 export const getNote = async (id: string) => {
   console.log("Getting note")
 
-  const docRef = doc(db, "notes", id)
-  const note = await getDoc(docRef)
+  const note = await getSingleDoc("notes", id)
 
-  if (note.exists()) {
-    console.log("Note: ", note.data())
-  } else {
-    console.log("No such Note")
-  }
+  return note
 }
 
 // update note
 export const updateNote = async (id: string) => {
   console.log("Updating note")
+
+  const title = prompt("Title")
+  const text = prompt("text")
+
+  const payload = { title, text }
+
+  updateDocItem("notes", payload, id)
 }
 
 // delete note
