@@ -11,12 +11,12 @@ import db from "../firebase/client"
 
 // set doc with specific ID
 // OBS setDoc is dangerous - can owerwrite whole doc
-export const createDocWithSpecificID = async (
+export const setDocWithSpecificID = async (
   collectionName: string,
   payload: object,
   id: string
 ) => {
-  console.log("Setting doc")
+  console.log("setDocWithSpecificID")
 
   await setDoc(doc(db, collectionName, id), payload)
 }
@@ -28,9 +28,9 @@ export const mergeDocWithSpecificID = async (
   payload: object,
   id: string
 ) => {
-  console.log("Setting doc")
+  console.log("mergeDocWithSpecificID")
 
-  await setDoc(doc(db, collectionName, id), payload)
+  await setDoc(doc(db, collectionName, id), payload, { merge: true })
 }
 
 // add doc with firebase auto ID
@@ -38,11 +38,12 @@ export const createDocWithAutoID = async (
   collectionName: string,
   payload: object
 ) => {
-  console.log("Adding doc")
+  console.log("createDocWithAutoID")
 
   const collectionRef = collection(db, collectionName)
   const newDocRef = await addDoc(collectionRef, payload)
   // console.log("The new doc ID is: ", newDocRef.id)
+
   return newDocRef
 }
 

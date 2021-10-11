@@ -6,7 +6,7 @@ import {
   onSnapshot,
 } from "@firebase/firestore"
 import db from "../firebase/client"
-import { createDoc } from "./firebase"
+import { createDocWithAutoID, deleteItem } from "./firebase"
 
 // create note
 export const createNote = async () => {
@@ -15,7 +15,8 @@ export const createNote = async () => {
 
   const payload = { title, text }
 
-  createDoc("notes", payload)
+  const newDocRef = await createDocWithAutoID("notes", payload)
+  // console.log("newDocRef", newDocRef)
 }
 
 // get all notes
@@ -57,10 +58,12 @@ export const getNote = async (id: string) => {
 
 // update note
 export const updateNote = async (id: string) => {
-  console.log("Creating note")
+  console.log("Updating note")
 }
 
 // delete note
 export const deleteNote = async (id: string) => {
   console.log("Deleting note")
+
+  deleteItem("notes", id)
 }
