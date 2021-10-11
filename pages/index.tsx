@@ -4,7 +4,7 @@ import Head from "next/head"
 
 import db from "../src/firebase/client"
 import { collection, onSnapshot } from "@firebase/firestore"
-import { createNote } from "../src/utils/notes"
+import { createNote, updateNote, deleteNote } from "../src/utils/notes"
 
 export default function Home() {
   const [noteList, setNoteList] = useState([])
@@ -40,9 +40,29 @@ export default function Home() {
 
           <ul className="grid gap-2">
             {noteList.map((note: any) => (
-              <li key={note.id} className="px-5 py-3 rounded-lg bg-gray-100">
-                <h1 className="my-h5 text-green-400">{note.title}</h1>
-                <p className="mt-[2px] text-sm text-gray-600">{note.text}</p>
+              <li
+                key={note.id}
+                className="grid gap-4 grid-flow-col justify-between px-5 py-3 rounded-lg bg-gray-100"
+              >
+                <div>
+                  <h1 className="my-h5 text-green-400">{note.title}</h1>
+                  <p className="mt-[2px] text-sm text-gray-600">{note.text}</p>
+                </div>
+
+                <div className="grid grid-flow-col gap-2 content-center">
+                  <button
+                    className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded-lg"
+                    onClick={() => updateNote(note.id)}
+                  >
+                    update
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 p-2 text-white rounded-lg"
+                    onClick={() => deleteNote(note.id)}
+                  >
+                    delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
