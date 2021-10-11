@@ -5,8 +5,12 @@ import {
   deleteField,
   doc,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
+  WhereFilterOp,
 } from "@firebase/firestore"
 import db from "../firebase/client"
 
@@ -41,7 +45,7 @@ export const updateDocItem = async (
   id: string
 ) => {
   console.log("updateDocItem")
-  
+
   const docRef = doc(db, collectionName, id)
   await setDoc(docRef, payload, { merge: true })
 }
@@ -60,6 +64,7 @@ export const createDocWithAutoID = async (
   return newDocRef
 }
 
+// get doc
 export const getSingleDoc = async (collectionName: string, id: string) => {
   const docRef = doc(db, collectionName, id)
   const docSnap = await getDoc(docRef)
@@ -71,6 +76,29 @@ export const getSingleDoc = async (collectionName: string, id: string) => {
     // doc.data() will be undefined in this case
     console.log("No such document!")
   }
+}
+
+// get all docs in a collection
+export const getAllDocs = async (collectionName: string) => {
+  const docList = await getDocs(collection(db, collectionName))
+
+  return docList
+}
+
+// get multiple docs with query - this is just a example - there is alot more filter operators
+export const getMultipleDocs = async (
+  collectionName: string,
+  key: string,
+  queryOperator: WhereFilterOp,
+  value: any
+) => {
+  const q = query(
+    collection(db, collectionName),
+    where(key, queryOperator, value)
+  )
+  const querySnapshot = await getDocs(q)
+
+  return querySnapshot
 }
 
 // delete doc

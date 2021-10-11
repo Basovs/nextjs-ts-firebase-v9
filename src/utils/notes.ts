@@ -10,6 +10,8 @@ import db from "../firebase/client"
 import {
   createDocWithAutoID,
   deleteItem,
+  getAllDocs,
+  getMultipleDocs,
   getSingleDoc,
   updateDocItem,
 } from "./firebase"
@@ -26,7 +28,7 @@ export const createNote = async () => {
 }
 
 // get all notes
-export const getAllNotes = async () => {
+export const subscribeToAllNotes = async () => {
   console.log("Getting noteList")
   const collectionRef = collection(db, "notes")
 
@@ -55,6 +57,20 @@ export const getNote = async (id: string) => {
   const note = await getSingleDoc("notes", id)
 
   return note
+}
+
+// get all docs in a collection
+export const getAllNotes = async () => {
+  const noteSnapshot = await getAllDocs("notes")
+
+  return noteSnapshot
+}
+
+// get multiple notes with query
+export const getMultipleNotes = async () => {
+  const multipleNotes = await getMultipleDocs("notes", "title", "==", "222")
+
+  return multipleNotes
 }
 
 // update note
