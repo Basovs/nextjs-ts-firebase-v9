@@ -6,6 +6,10 @@
   .my-h5 {
     @apply font-bold text-base;
   }
+
+  .my-btn {
+    @apply rounded-lg text-sm font-medium p-2;
+  }
 }
 
 html,
