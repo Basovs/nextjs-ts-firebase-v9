@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import Head from "next/head"
-// import styles from "../styles/Home.module.css"
 
 import db from "../src/firebase/client"
 import {
@@ -38,7 +37,7 @@ export default function Home() {
     return unsub
   }, [])
 
-  // get one specific note
+  // get one specific note - once
   useEffect(() => {
     const getNoteDoc = async () => {
       const noteID = "XFteojhHOMD6rHH03pWD"
@@ -49,7 +48,7 @@ export default function Home() {
     getNoteDoc()
   }, [])
 
-  // get all notes in a collection
+  // get all notes in a collection - once
   useEffect(() => {
     const getAllDocs = async () => {
       const noteList = await getAllNotes()
@@ -59,7 +58,7 @@ export default function Home() {
     getAllDocs()
   }, [])
 
-  // get multiple notes
+  // get multiple notes - once
   useEffect(() => {
     const getMultipleDocs = async () => {
       const multipleNoteList = await getMultipleNotes()
